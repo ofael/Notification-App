@@ -26,16 +26,17 @@ fun Context.showNotification(channelId : String, title: String, body : String) {
             NotificationChannel(channelId, body, NotificationManager.IMPORTANCE_HIGH).apply {
                 lightColor = Color.BLUE
                 enableVibration(true)
-                notificationManager.createNotificationChannel(notificationChannel)
             }
+        notificationManager.createNotificationChannel(notificationChannel)
+        builder = NotificationCompat.Builder(this, channelId).apply {
+            setSmallIcon(R.drawable.ic_launcher_background)
+            setContentTitle(title)
+            setContentText(body)
+            setAutoCancel(true)
+            setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE))
+            setContentIntent(pendingIntent)
         }
-    builder = NotificationCompat.Builder(this, channelId).apply {
-        setSmallIcon(R.drawable.ic_launcher_background)
-        setContentTitle(title)
-        setContentText(body)
-        setAutoCancel(true)
-        setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE))
-        setContentIntent(pendingIntent)
+
     }
     notificationManager.notify(channelId.toInt(), builder.build())
 }
